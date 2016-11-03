@@ -36,13 +36,13 @@ module StumpyCore
     end
     
     def paste(canvas, x, y)
-      #StumpyPNG does not handle going out of bound well so we have to be very $
+      #StumpyPNG does not handle going out of bound well so we have to be very careful with the paste
 
       #detect left side first
       min_x = (x < 0 ? x.abs : 0)
-      max_x = canvas.width - (x + canvas.width >= width ? x + canvas.width - wi$
+      max_x = canvas.width - (x + canvas.width >= width ? x + canvas.width - width)
       min_y = (y < 0 ? y.abs : 0)
-      max_y = canvas.height - (y + canvas.height >= height ? y + canvas.height $
+      max_y = canvas.height - (y + canvas.height >= height ? y + canvas.height - height)
 
       (min_x...max_x).each do |cx|
         (min_y...max_y).each do |cy|
@@ -60,7 +60,7 @@ module StumpyCore
             n_g = (t_color.g * t_a) + (b_color.g * (1.0 - t_a))
             n_b = (t_color.b * t_a) + (b_color.b * (1.0 - t_a))
 
-            self[x + cx, y + cy] = RGBA.new(n_r.to_u16, n_g.to_u16, n_b.to_u16,$
+            self[x + cx, y + cy] = RGBA.new(n_r.to_u16, n_g.to_u16, n_b.to_u16, UInt16::MAX)
           end
         end    
       end
