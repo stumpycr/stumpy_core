@@ -20,6 +20,20 @@ module StumpyCore
         new_a,
       )
     end
+    
+    def over(other : RGBA) : RGBA
+      if self.a == UInt16::MAX
+        self
+      elsif self.a == UInt16::MIN
+        other
+      else        
+        t_a = (self.a.to_f/UInt16::MAX)
+        n_r = (self.r * t_a) + (other.r * (1.0 - t_a))
+        n_g = (self.g * t_a) + (other.g * (1.0 - t_a))
+        n_b = (self.b * t_a) + (other.b * (1.0 - t_a))
+        RGBA.new(n_r.to_u16, n_g.to_u16, n_b.to_u16, UInt16::MAX)
+      end
+    end
 
     def self.from_gray_n(value, n)
       gray = Utils.scale_up(value, n)
