@@ -24,9 +24,9 @@
   * `canvas[x, y]` to get a color, `x` and `y` need to be in range!
   * `canvas.set(x, y, color)` same as `canvas[x, y] = color`
   * `canvas.get(x, y)` same as `canvas[x, y]`
-  * `canvas.safe_get(x, y)` returns `nil` if `x` or `y` are invalid
   * `canvas.safe_set(x, y, color)` returns true if setting the color was successful
-  * `canvas.wrapping_set(x, y)` `set` combined with modulo, to ensure `x` and `y` are in range
+  * `canvas.safe_get(x, y)` returns `nil` if `x` or `y` are invalid
+  * `canvas.wrapping_set(x, y, color)` `set` combined with modulo, to ensure `x` and `y` are in range
   * `canvas.wrapping_get(x, y)` `get` combined with modulo, to ensure `x` and `y` are in range
 
 ## Contributors
