@@ -36,33 +36,34 @@ module StumpyCore
     end
     
     def paste(canvas, x, y)
-      #StumpyPNG does not handle going out of bound well so we have to be very careful with the paste
-
-      #detect left side first
-      min_x = (x < 0 ? x.abs : 0)
-      max_x = canvas.width - (x + canvas.width >= width ? x + canvas.width - width)
-      min_y = (y < 0 ? y.abs : 0)
-      max_y = canvas.height - (y + canvas.height >= height ? y + canvas.height - height)
-
-      (min_x...max_x).each do |cx|
-        (min_y...max_y).each do |cy|
-          if canvas[cx, cy].a == UInt16::MAX
-            self[x + cx, y + cy] = canvas[cx, cy]
-          elsif canvas[cx, cy].a == UInt16::MIN
-            #dont do anything, it's invisble
-          else
-            b_color = self[x + cx, y + cy]
-            t_color = canvas[cx, cy]
-
-        
-            t_a = (t_color.a.to_f/UInt16::MAX)
-            n_r = (t_color.r * t_a) + (b_color.r * (1.0 - t_a))
-            n_g = (t_color.g * t_a) + (b_color.g * (1.0 - t_a))
-            n_b = (t_color.b * t_a) + (b_color.b * (1.0 - t_a))
-
-            self[x + cx, y + cy] = RGBA.new(n_r.to_u16, n_g.to_u16, n_b.to_u16, UInt16::MAX)
+      (0...canvas.width).each do |cx|
+        (0...canvas.height).each do |cy|
+          current = safe_get(x + cx, y + cy)
+          unless current.nil?
+            self[x + cx, y + cy] = canvas[cx, cy].over(current)
           end
         end    
+      end
+    end
+    
+    def safe_get(x : Int32, y : Int32) : RGBA | Nil    
+      if x < 0 || x >= width
+        nil
+      elsif y < 0 || y >= height
+        nil
+      else
+        self[x, y]
+      end
+    end
+    
+    def safe_set(x : Int32, y : Int32, color : RGBA) : Bool
+      if x < 0 || x >= width
+        false
+      elsif y < 0 || y >= height
+        false
+      else
+        self[x, y] = color
+        true
       end
     end
   end
