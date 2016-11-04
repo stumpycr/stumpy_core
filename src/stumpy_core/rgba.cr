@@ -10,28 +10,26 @@ module StumpyCore
     def initialize(@r, @g, @b, @a)
     end
 
-    def add(other)
-      new_a = @a + other.a
-
-      RGBA.new(
-        (@r.to_f / new_a * @a + other.r.to_f / new_a * other.a).to_u16,
-        (@g.to_f / new_a * @a + other.g.to_f / new_a * other.a).to_u16,
-        (@b.to_f / new_a * @a + other.b.to_f / new_a * other.a).to_u16,
-        new_a,
-      )
-    end
-    
     def over(other : RGBA) : RGBA
       if self.a == UInt16::MAX
         self
-      elsif self.a == UInt16::MIN
+      elsif self.a == 0
         other
       else        
-        t_a = (self.a.to_f/UInt16::MAX)
-        n_r = (self.r * t_a) + (other.r * (1.0 - t_a))
-        n_g = (self.g * t_a) + (other.g * (1.0 - t_a))
-        n_b = (self.b * t_a) + (other.b * (1.0 - t_a))
-        RGBA.new(n_r.to_u16, n_g.to_u16, n_b.to_u16, UInt16::MAX)
+        # See: https://en.wikipedia.org/wiki/Alpha_compositing
+        alpha_a = self.a.to_f / UInt16::MAX
+        alpha_b = other.a.to_f / UInt16::MAX
+
+        # Some precalculated factors
+        pre_1 = alpha_b * (1 - alpha_a)
+        alpha_0 = alpha_a + pre_1
+
+        new_r = ((self.r * alpha_a) + (other.r * pre_1)) / alpha_0
+        new_g = ((self.g * alpha_a) + (other.g * pre_1)) / alpha_0
+        new_b = ((self.b * alpha_a) + (other.b * pre_1)) / alpha_0
+        new_a = alpha_0 * UInt16::MAX
+
+        RGBA.new(new_r.to_u16, new_g.to_u16, new_b.to_u16, new_a.to_u16)
       end
     end
 
