@@ -15,7 +15,7 @@ module StumpyCore
         self
       elsif self.a == 0
         other
-      else        
+      else
         # See: https://en.wikipedia.org/wiki/Alpha_compositing
         alpha_a = self.a.to_f / UInt16::MAX
         alpha_b = other.a.to_f / UInt16::MAX

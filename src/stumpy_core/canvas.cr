@@ -29,12 +29,12 @@ module StumpyCore
     def wrapping_get(x : Int32, y : Int32) : RGBA
       self[x % @width, y % @height]
     end
-    
+
     def wrapping_set(x : Int32, y : Int32, color : RGBA)
       self[x % @width, y % @height] = color
     end
 
-    def safe_get(x : Int32, y : Int32) : RGBA | Nil    
+    def safe_get(x : Int32, y : Int32) : RGBA | Nil
       if x < 0 || x >= width
         nil
       elsif y < 0 || y >= height
@@ -43,7 +43,7 @@ module StumpyCore
         self[x, y]
       end
     end
-    
+
     def safe_set(x : Int32, y : Int32, color : RGBA) : Bool
       if x < 0 || x >= width
         false
@@ -71,7 +71,7 @@ module StumpyCore
         @height == other.height &&
         @pixels == other.pixels
     end
-    
+
     def paste(canvas, x, y)
       (0...canvas.width).each do |cx|
         (0...canvas.height).each do |cy|
@@ -79,7 +79,7 @@ module StumpyCore
           unless current.nil?
             self[x + cx, y + cy] = canvas[cx, cy].over(current)
           end
-        end    
+        end
       end
     end
   end
