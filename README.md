@@ -10,7 +10,7 @@ or saving one to an image file.
 * <https://github.com/l3kn/stumpy_png>
 * <https://github.com/l3kn/stumpy_gif>
 
-```
+```crystal
 include StumpyCore
 
 canvas = Canvas.new(256, 256)
