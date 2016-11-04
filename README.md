@@ -21,7 +21,7 @@
   * `canvas.width`
   * `canvas.height`
   * `canvas[x, y] = color` to set a color, `x` and `y` need to be in range!
-  * `canvas[x, y]` to get a color, "
+  * `canvas[x, y]` to get a color, `x` and `y` need to be in range!
   * `canvas.set(x, y, color)` same as `canvas[x, y] = color`
   * `canvas.get(x, y)` same as `canvas[x, y]`
   * `canvas.safe_get(x, y)` returns `nil` if `x` or `y` are invalid
