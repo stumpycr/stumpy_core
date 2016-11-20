@@ -87,11 +87,11 @@ module StumpyCore
       RGBA.new(red, green, blue, alpha)
     end
 
-    def self.from_rgb(r, g, b)
+    def self.from_rgb8(r, g, b)
       from_rgb(r, g, b, 8)
     end
 
-    def to_rgb
+    def to_rgb8
       {
         Utils.scale_from_to(r, 16, 8).to_u8,
         Utils.scale_from_to(g, 16, 8).to_u8,
@@ -99,8 +99,16 @@ module StumpyCore
       }
     end
 
-    def self.from_rgb(r, g, b, a)
+    def self.from_rgba8(r, g, b, a)
       from_rgba(r, g, b, a, 8)
+    end
+
+    def to_rgb
+      to_rgb8
+    end
+
+    def self.from_rgb(r, g, b)
+      self.from_rgb8(r, g, b)
     end
 
     def to_rgba
