@@ -41,8 +41,8 @@ checkerboard = Canvas.new(256, 256) do |x, y|
 end
 ```
 
-![rainbow.png](images/rainbow)
-![checkerboard.png](images/checkerboard)
+![rainbow image](images/rainbow.png)
+![checkerboard image](images/checkerboard.png)
 
 ## Interface
 
