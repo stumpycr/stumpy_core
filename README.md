@@ -33,7 +33,7 @@ white = Canvas.new(256, 256, RGBA.from_hex("#ffffff"))
 rainbow2 = Canvas.new(256, 256) { |x, y| RGBA.from_rgb_n(x, y, 255, 8) }
 
 checkerboard = Canvas.new(256, 256) do |x, y|
-  if ((x / 16) + (y / 16)).odd?
+  if ((x / 32) + (y / 32)).odd?
     RGBA.from_hex("#ffffff")
   else
     RGBA.from_hex("#000000")
