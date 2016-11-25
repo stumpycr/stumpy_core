@@ -10,6 +10,17 @@ module StumpyCore
       @pixels = Slice.new(@width * @height, background)
     end
 
+    def initialize(@width, @height, &block)
+      @pixels = Slice.new(@width * @height, RGBA.new(0_u16, 0_u16, 0_u16, 0_u16))
+
+      (0...@width).each do |x|
+        (0...@height).each do |y|
+          color = yield({x, y})
+          set(x, y, color)
+        end
+      end
+    end
+
     def set(x, y, color)
       @pixels[x + @width * y] = color
     end

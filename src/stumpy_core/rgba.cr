@@ -74,6 +74,15 @@ module StumpyCore
       RGBA.new(red, green, blue, alpha)
     end
 
+    def self.from_hex(hex : String)
+      raise "Invalid hex color: #{hex}" if hex.size != 7 || hex[0] != '#'
+
+      r = hex[1,2].to_i(16)
+      g = hex[3,2].to_i(16)
+      b = hex[5,2].to_i(16)
+      from_rgb_n(r, g, b, 8)
+    end
+
     def to_rgb8
       {
         Utils.scale_from_to(r, 16, 8).to_u8,

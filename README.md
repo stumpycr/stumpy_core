@@ -13,17 +13,36 @@ or saving one to an image file.
 ```crystal
 include StumpyCore
 
-canvas = Canvas.new(256, 256)
-
+rainbow = Canvas.new(256, 256)
 (0...255).each do |x|
   (0...255).each do |y|
     # RGBA.from_rgb_n(values, bit_depth) is an internal helper method
     # that creates an RGBA object from a rgb triplet with a given bit depth
     color = RGBA.from_rgb_n(x, y, 255, 8)
-    canvas[x, y] = color
+    rainbow[x, y] = color
+  end
+end
+
+# It is also possible to provide a background color,
+# the default is transparent black `RGBA.new(0, 0, 0, 0)`
+white = Canvas.new(256, 256, RGBA.from_hex("#ffffff"))
+
+# If the colors for all pixels are already known when creating the canvas,
+# the block syntax can be used to simplify the code:
+
+rainbow2 = Canvas.new(256, 256) { |x, y| RGBA.from_rgb_n(x, y, 255, 8) }
+
+checkerboard = Canvas.new(256, 256) do |x, y|
+  if ((x / 16) + (y / 16)).odd?
+    RGBA.from_hex("#ffffff")
+  else
+    RGBA.from_hex("#000000")
   end
 end
 ```
+
+![rainbow](images/rainbow)
+![checkerboard](images/checkerboard)
 
 ## Interface
 
@@ -41,6 +60,7 @@ end
     * `StumpyCore::RGBA.from_rgba_n(r, g, b, alpha, n)`
     * All of the above (except `from_gray_n`) work with tuples/arrays, too
       (`StumpyCore::RGBA.from_rgba_n({r, g, b, alpha}, n)`
+    * `StumpyCore::RGBA.from_hex(color)`, e.g. `color = "#ff0000"`
 
 * `StumpyCore::Canvas`, two dimensional Array of RGBA value
   * `canvas.width`
