@@ -10,7 +10,7 @@ module StumpyCore
     def initialize(@r, @g, @b, @a = UInt16::MAX)
     end
 
-    def initialize(gray, @a = UInt16::MAX)
+    def initialize(gray : UInt16, @a = UInt16::MAX)
       @r = @g = @b = gray
     end
 
