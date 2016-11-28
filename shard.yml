@@ -1,5 +1,5 @@
 name: stumpy_core
-version: 1.1.0
+version: 1.2.0
 
 authors:
   - Leon Rische <hello@l3kn.de>
@@ -7,6 +7,6 @@ authors:
 development_dependencies:
   minitest:
     git: https://github.com/ysbaddaden/minitest.cr.git
-    version: ~> 0.3.1
+    version: ~> 0.3.5
 
 license: MIT

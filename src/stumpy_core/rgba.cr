@@ -7,7 +7,11 @@ module StumpyCore
     getter b : UInt16
     getter a : UInt16
 
-    def initialize(@r, @g, @b, @a)
+    def initialize(@r, @g, @b, @a = UInt16::MAX)
+    end
+
+    def initialize(gray, @a = UInt16::MAX)
+      @r = @g = @b = gray
     end
 
     def over(other : RGBA) : RGBA
