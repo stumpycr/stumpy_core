@@ -46,23 +46,15 @@ module StumpyCore
     end
 
     def safe_get(x : Int32, y : Int32) : RGBA | Nil
-      if x < 0 || x >= width
-        nil
-      elsif y < 0 || y >= height
-        nil
-      else
-        self[x, y]
-      end
+      includes_pixel?(x, y) ? self[x, y] : nil
     end
 
     def safe_set(x : Int32, y : Int32, color : RGBA) : Bool
-      if x < 0 || x >= width
-        false
-      elsif y < 0 || y >= height
-        false
-      else
+      if includes_pixel?(x, y)
         self[x, y] = color
         true
+      else
+        false
       end
     end
 
@@ -74,6 +66,24 @@ module StumpyCore
       @height.times do |n|
         yield @pixels[n * @width, @width]
       end
+    end
+
+    def map!(&block)
+      (0...@width).each do |x|
+        (0...@height).each do |y|
+          self[x, y] = yield self[x, y], x, y
+        end
+      end
+    end
+
+    def map(&block)
+      canvas = Canvas.new(@width, @height)
+      (0...@width).each do |x|
+        (0...@height).each do |y|
+          canvas[x, y] = yield self[x, y], x, y
+        end
+      end
+      canvas
     end
 
     def ==(other)
