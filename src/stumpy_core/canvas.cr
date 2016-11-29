@@ -93,7 +93,37 @@ module StumpyCore
         @pixels == other.pixels
     end
 
-    def paste(canvas, x, y)
+    def apply(&block)
+      new_canvas = Canvas.new(@width, @height)
+
+      (0...@width).each do |x|
+        (0...@height).each do |y|
+          new_canvas[x, y] = yield self[x, y]
+        end
+      end
+
+      new_canvas
+    end
+
+    def apply!(&block)
+      (0...@width).each do |x|
+        (0...@height).each do |y|
+          self.[x, y] = yield self[x, y]
+        end
+      end
+
+      self
+    end
+
+    def tint(color : RGBA)
+      apply { |pixel| pixel.multiply(color) }
+    end
+
+    def tint!(color : RGBA)
+      apply! { |pixel| pixel.multiply(color) }
+    end
+
+    def paste(canvas : Canvas, x, y)
       (0...canvas.width).each do |cx|
         (0...canvas.height).each do |cy|
           current = safe_get(x + cx, y + cy)

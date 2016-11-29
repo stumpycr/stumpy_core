@@ -14,6 +14,18 @@ module StumpyCore
       @r = @g = @b = gray
     end
 
+    def multiply(other : RGBA) : RGBA
+      r0, g0, b0, a0 = self.to_relative
+      r1, g1, b1, a1 = other.to_relative
+
+      RGBA.from_relative(
+        r0 * r1,
+        g0 * g1,
+        b0 * b1,
+        a0 * a1
+      )
+    end
+
     def over(other : RGBA) : RGBA
       if self.a == UInt16::MAX
         self
@@ -53,6 +65,7 @@ module StumpyCore
       RGBA.new(gray, gray, gray, alpha)
     end
 
+
     def self.from_rgb_n(values, n)
       r, g, b = values
       from_rgb_n(r, g, b, n)
@@ -87,6 +100,10 @@ module StumpyCore
       from_rgb_n(r, g, b, 8)
     end
 
+    def self.from_rgb8(r, g, b)
+      from_rgb(r, g, b, 8)
+    end
+
     def to_rgb8
       {
         Utils.scale_from_to(r, 16, 8).to_u8,
@@ -95,12 +112,42 @@ module StumpyCore
       }
     end
 
-    def to_rgba8
+    def self.from_rgba8(r, g, b, a)
+      from_rgba(r, g, b, a, 8)
+    end
+
+    def to_rgb
+      to_rgb8
+    end
+
+    def self.from_rgb(r, g, b)
+      self.from_rgb8(r, g, b)
+    end
+
+    def to_rgba
       {
         Utils.scale_from_to(r, 16, 8).to_u8,
         Utils.scale_from_to(g, 16, 8).to_u8,
         Utils.scale_from_to(b, 16, 8).to_u8,
         Utils.scale_from_to(a, 16, 8).to_u8,
+      }
+    end
+
+    def self.from_relative(r, g, b, a)
+      RGBA.new(
+        (r * UInt16::MAX).to_u16,
+        (g * UInt16::MAX).to_u16,
+        (b * UInt16::MAX).to_u16,
+        (a * UInt16::MAX).to_u16
+      )
+    end
+
+    def to_relative
+      {
+        r.to_f / UInt16::MAX,
+        g.to_f / UInt16::MAX,
+        b.to_f / UInt16::MAX,
+        a.to_f / UInt16::MAX,
       }
     end
   end
