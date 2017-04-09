@@ -101,7 +101,7 @@ module StumpyCore
     end
 
     def self.from_rgb8(r, g, b)
-      from_rgb(r, g, b, 8)
+      from_rgb_n(r, g, b, 8)
     end
 
     def to_rgb8
@@ -113,7 +113,7 @@ module StumpyCore
     end
 
     def self.from_rgba8(r, g, b, a)
-      from_rgba(r, g, b, a, 8)
+      from_rgba_n(r, g, b, a, 8)
     end
 
     def to_rgb
