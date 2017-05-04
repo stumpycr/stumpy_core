@@ -7,8 +7,8 @@ but there are a few other libraries
 that allow creating a canvas from an image file
 or saving one to an image file.
 
-* <https://github.com/l3kn/stumpy_png>
-* <https://github.com/l3kn/stumpy_gif>
+* <https://github.com/stumpycr/stumpy_png>
+* <https://github.com/stumpycr/stumpy_gif>
 
 ```crystal
 include StumpyCore
