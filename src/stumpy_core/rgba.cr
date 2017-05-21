@@ -120,6 +120,32 @@ module StumpyCore
       to_rgb8
     end
 
+    def self.from_hsl(h, s, l)
+      h /= 360.0
+      s /= 100.0
+      l /= 100.0
+
+      if s == 0
+        r = g = b = l
+      else
+        hue = Proc(Float64, Float64, Float64, Float64).new do | a, b, c |
+          (c < 0) ? (c += 1.0) : "pass"
+          (c > 1) ? (c -= 1.0) : "pass"
+          (c < 1.0/6.0) ? (return a + (b - a) * 6.0 * c) : "pass"
+          (c < 1.0/2.0) ? (return b) : "pass"
+          (c < 2.0/3.0) ? (return a + (b - a) * (2.0/3.0 - c) * 6.0) : "pass"
+          return a
+        end
+        b = (l < 0.5) ? (l * (1.0 + s)) : (l + s - l * s)
+        a = 2.0 * l - b
+        r = hue.call(a, b, h + 1.0/3.0)
+        g = hue.call(a, b, h)
+        b = hue.call(a, b, h - 1.0/3.0)
+      end
+
+      return from_rgb_n((r * 255.0).round.to_i, (g * 255.0).round.to_i, (b * 255.0).round.to_i, 8)
+    end
+
     def self.from_rgb(r, g, b)
       self.from_rgb8(r, g, b)
     end
