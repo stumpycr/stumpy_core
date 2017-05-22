@@ -39,10 +39,21 @@ checkerboard = Canvas.new(256, 256) do |x, y|
     RGBA.from_hex("#000000")
   end
 end
+
+spectrum = Canvas.new(361, 101)
+(0..360.each do |x|
+  (0..100).each do |y|
+    # RGBA.from_hsla_n(hue, saturation, lightness, alpha, bit_depth) is an internal helper method
+    color = RGBA.from_hsla_n(x, 100, y, UInt16::MAX, 8) # Here from_hsl(x, 100, y) would work exactly the same
+    spectrum[x, y] = color
+  end
+end
 ```
 
 ![rainbow image](images/rainbow.png)
 ![checkerboard image](images/checkerboard.png)
+![spectrum image](images/spectrum.png)
+
 
 ## Interface
 
