@@ -120,51 +120,6 @@ module StumpyCore
       to_rgb8
     end
 
-    def self.get_hsl_hue(a, b, c)
-      if (c < 0); (c += 1.0) end
-      if (c > 1); (c -= 1.0) end
-      if (c < 1.0/6.0); (return a + (b - a) * 6.0 * c) end
-      if (c < 1.0/2.0); (return b) end
-      if (c < 2.0/3.0); (return a + (b - a) * (2.0/3.0 - c) * 6.0) end
-      return a
-    end
-
-    def self.from_hsla(h, s, l, alpha)
-      h /= 360.0
-      s /= 100.0
-      l /= 100.0
-
-      if s == 0
-        r = g = b = l
-      else
-        b = (l < 0.5) ? (l * (1.0 + s)) : (l + s - l * s)
-        a = 2.0 * l - b
-        r = get_hsl_hue(a, b, h + 1.0/3.0)
-        g = get_hsl_hue(a, b, h)
-        b = get_hsl_hue(a, b, h - 1.0/3.0)
-      end
-
-      r = Utils.scale_up(r * 255.0, 8)
-      g = Utils.scale_up(g * 255.0, 8)
-      b = Utils.scale_up(b * 255.0, 8)
-      alpha = Utils.scale_up(alpha, 8)
-      RGBA.new(r, g, b, alpha)
-    end
-
-    def self.from_hsla(hsla)
-      h, s, l, a = hsla
-      from_hsla(h, s, l, a)
-    end
-
-    def self.from_hsl(h, s, l)
-      from_hsla(h, s, l, UInt16::MAX)
-    end
-
-    def self.from_hsl(hsl)
-      h, s, l = hsl
-      from_hsla(h, s, l, UInt16::MAX)
-    end
-
     def self.from_rgb(r, g, b)
       self.from_rgb8(r, g, b)
     end
@@ -194,6 +149,55 @@ module StumpyCore
         b.to_f / UInt16::MAX,
         a.to_f / UInt16::MAX,
       }
+    end
+
+    private def self.get_hsl_hue(a, b, c)
+      c += 1.0 if c < 0
+      c -= 1.0 if c > 1
+
+      if c < 1.0/6.0
+        a + (b - a) * 6.0 * c
+      elsif c < 1.0/2.0
+        b
+      elsif c < 2.0/3.0
+        a + (b - a) * (2.0/3.0 - c) * 6.0
+      else
+        a
+      end
+    end
+
+    def self.from_hsla(h, s, l, alpha)
+      h /= 360.0
+      s /= 100.0
+      l /= 100.0
+
+      if s == 0
+        from_relative(l, l, l, alpha)
+      else
+        b = l < 0.5 ? l * (1.0 + s) : l + s - l * s
+        a = 2.0 * l - b
+
+        from_relative(
+          get_hsl_hue(a, b, h + 1.0/3.0),
+          get_hsl_hue(a, b, h),
+          get_hsl_hue(a, b, h - 1.0/3.0),
+          alpha
+        )
+      end
+    end
+
+    def self.from_hsla(hsla)
+      h, s, l, a = hsla
+      from_hsla(h, s, l, a)
+    end
+
+    def self.from_hsl(h, s, l)
+      from_hsla(h, s, l, 1.0)
+    end
+
+    def self.from_hsl(hsl)
+      h, s, l = hsl
+      from_hsla(h, s, l, 1.0)
     end
   end
 end
