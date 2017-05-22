@@ -69,6 +69,8 @@ end
     * `StumpyCore::RGBA.from_graya_n(grayscale_value, alpha, n)`
     * `StumpyCore::RGBA.from_rgb_n(r, g, b, n)`
     * `StumpyCore::RGBA.from_rgba_n(r, g, b, alpha, n)`
+    * `StumpyCore::RGBA.from_hsl_n(h, s, l, n)`
+    * `StumpyCore::RGBA.from_hsla_n(h, s, l, alpha, n)`
     * All of the above (except `from_gray_n`) work with tuples/arrays, too
       (`StumpyCore::RGBA.from_rgba_n({r, g, b, alpha}, n)`
     * `StumpyCore::RGBA.from_hex(color)`, e.g. `color = "#ff0000"`
