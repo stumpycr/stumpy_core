@@ -40,14 +40,7 @@ checkerboard = Canvas.new(256, 256) do |x, y|
   end
 end
 
-spectrum = Canvas.new(361, 101)
-(0..360.each do |x|
-  (0..100).each do |y|
-    # RGBA.from_hsla(hue, saturation, lightness, alpha) is an internal helper method
-    color = RGBA.from_hsla(x, 100, y, UInt16::MAX, 8) # Here from_hsl(x, 100, y) would work exactly the same
-    spectrum[x, y] = color
-  end
-end
+spectrum = Canvas.new(361, 101) { |x, y| RGBA.from_hsl(x, 100, y) }
 ```
 
 ![rainbow image](images/rainbow.png)
@@ -69,8 +62,8 @@ end
     * `StumpyCore::RGBA.from_graya_n(grayscale_value, alpha, n)`
     * `StumpyCore::RGBA.from_rgb_n(r, g, b, n)`
     * `StumpyCore::RGBA.from_rgba_n(r, g, b, alpha, n)`
-    * `StumpyCore::RGBA.from_hsl(h, s, l)`
-    * `StumpyCore::RGBA.from_hsla(h, s, l, alpha)`
+    * `StumpyCore::RGBA.from_hsl(h, s, l)`, h = 0..360, s = 0..100, l = 0..10
+    * `StumpyCore::RGBA.from_hsla(h, s, l, alpha)`, alpha = 0..1
     * All of the above (except `from_gray_n`) work with tuples/arrays, too
       (`StumpyCore::RGBA.from_rgba_n({r, g, b, alpha}, n)`
     * `StumpyCore::RGBA.from_hex(color)`, e.g. `color = "#ff0000"`
@@ -92,8 +85,8 @@ end
 Thanks goes to these wonderful people ([emoji key](https://github.com/kentcdodds/all-contributors#emoji-key)):
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
-| [<img src="https://avatars.githubusercontent.com/u/2060269?v=3" width="100px;"/><br /><sub>Leon</sub>](https://github.com/l3kn)<br />[💻](https://github.com/l3kn/stumpy_core/commits?author=l3kn) | [<img src="https://avatars.githubusercontent.com/u/1298501?v=3" width="100px;"/><br /><sub>Ian Rash</sub>](https://github.com/redcodefinal)<br />[💻](https://github.com/l3kn/stumpy_core/commits?author=redcodefinal) |
-| :---: | :---: |
+| [<img src="https://avatars.githubusercontent.com/u/2060269?v=3" width="100px;"/><br /><sub>Leon</sub>](https://github.com/l3kn)<br />[💻](https://github.com/l3kn/stumpy_core/commits?author=l3kn "Code") | [<img src="https://avatars.githubusercontent.com/u/1298501?v=3" width="100px;"/><br /><sub>Ian Rash</sub>](http://broken-kami.tumblr.com)<br />[💻](https://github.com/l3kn/stumpy_core/commits?author=redcodefinal "Code") | [<img src="https://avatars2.githubusercontent.com/u/26842759?v=3" width="100px;"/><br /><sub>Sam</sub>](https://github.com/Demonstrandum)<br /> |
+| :---: | :---: | :---: |
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors](https://github.com/kentcdodds/all-contributors) specification. Contributions of any kind welcome!
