@@ -43,8 +43,8 @@ end
 spectrum = Canvas.new(361, 101)
 (0..360.each do |x|
   (0..100).each do |y|
-    # RGBA.from_hsla_n(hue, saturation, lightness, alpha, bit_depth) is an internal helper method
-    color = RGBA.from_hsla_n(x, 100, y, UInt16::MAX, 8) # Here from_hsl(x, 100, y) would work exactly the same
+    # RGBA.from_hsla(hue, saturation, lightness, alpha) is an internal helper method
+    color = RGBA.from_hsla(x, 100, y, UInt16::MAX, 8) # Here from_hsl(x, 100, y) would work exactly the same
     spectrum[x, y] = color
   end
 end
@@ -69,8 +69,8 @@ end
     * `StumpyCore::RGBA.from_graya_n(grayscale_value, alpha, n)`
     * `StumpyCore::RGBA.from_rgb_n(r, g, b, n)`
     * `StumpyCore::RGBA.from_rgba_n(r, g, b, alpha, n)`
-    * `StumpyCore::RGBA.from_hsl_n(h, s, l, n)`
-    * `StumpyCore::RGBA.from_hsla_n(h, s, l, alpha, n)`
+    * `StumpyCore::RGBA.from_hsl(h, s, l)`
+    * `StumpyCore::RGBA.from_hsla(h, s, l, alpha)`
     * All of the above (except `from_gray_n`) work with tuples/arrays, too
       (`StumpyCore::RGBA.from_rgba_n({r, g, b, alpha}, n)`
     * `StumpyCore::RGBA.from_hex(color)`, e.g. `color = "#ff0000"`

@@ -129,7 +129,7 @@ module StumpyCore
       return a
     end
 
-    def self.from_hsla_n(h, s, l, alpha, n)
+    def self.from_hsla(h, s, l, alpha)
       h /= 360.0
       s /= 100.0
       l /= 100.0
@@ -144,33 +144,25 @@ module StumpyCore
         b = get_hsl_hue(a, b, h - 1.0/3.0)
       end
 
-      r = Utils.scale_up(r * 255.0, n)
-      g = Utils.scale_up(g * 255.0, n)
-      b = Utils.scale_up(b * 255.0, n)
+      r = Utils.scale_up(r * 255.0, 8)
+      g = Utils.scale_up(g * 255.0, 8)
+      b = Utils.scale_up(b * 255.0, 8)
       alpha = Utils.scale_up(alpha, n)
       RGBA.new(r, g, b, alpha)
     end
 
-    def self.from_hsla_n(hsla, n)
+    def self.from_hsl(hsla)
       h, s, l, a = hsla
-      from_hsla_n(h, s, l, a, n)
-    end
-
-    def self.from_hsla(h, s, l, a)
-      from_hsla_n(h, s, l, a, 8)
-    end
-
-    def self.from_hsl_n(h, s, l, n)
-      from_hsla_n(h, s, l, UInt16::MAX, n)
-    end
-
-    def self.from_hsl_n(hsl, n)
-      h, s, l = hsl
-      from_hsla_n(h, s, l, UInt16::MAX, n)
+      from_hsla_n(h, s, l, UInt16::MAX)
     end
 
     def self.from_hsl(h, s, l)
-      from_hsla_n(h, s, l, UInt16::MAX, 8)
+      from_hsla_n(h, s, l, UInt16::MAX)
+    end
+
+    def self.from_hsl(hsl)
+      h, s, l = hsl
+      from_hsla_n(h, s, l, UInt16::MAX)
     end
 
     def self.from_rgb(r, g, b)
