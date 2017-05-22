@@ -85,7 +85,7 @@ spectrum = Canvas.new(361, 101) { |x, y| RGBA.from_hsl(x, 100, y) }
 Thanks goes to these wonderful people ([emoji key](https://github.com/kentcdodds/all-contributors#emoji-key)):
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
-| [<img src="https://avatars.githubusercontent.com/u/2060269?v=3" width="100px;"/><br /><sub>Leon</sub>](https://github.com/l3kn)<br />[💻](https://github.com/l3kn/stumpy_core/commits?author=l3kn "Code") | [<img src="https://avatars.githubusercontent.com/u/1298501?v=3" width="100px;"/><br /><sub>Ian Rash</sub>](http://broken-kami.tumblr.com)<br />[💻](https://github.com/l3kn/stumpy_core/commits?author=redcodefinal "Code") | [<img src="https://avatars2.githubusercontent.com/u/26842759?v=3" width="100px;"/><br /><sub>Sam</sub>](https://github.com/Demonstrandum)<br /> |
+| [<img src="https://avatars.githubusercontent.com/u/2060269?v=3" width="100px;"/><br /><sub>Leon</sub>](https://github.com/l3kn)<br />[💻](https://github.com/l3kn/stumpy_core/commits?author=l3kn "Code") | [<img src="https://avatars.githubusercontent.com/u/1298501?v=3" width="100px;"/><br /><sub>Ian Rash</sub>](http://broken-kami.tumblr.com)<br />[💻](https://github.com/l3kn/stumpy_core/commits?author=redcodefinal "Code") | [<img src="https://avatars2.githubusercontent.com/u/26842759?v=3" width="100px;"/><br /><sub>Sam</sub>](https://github.com/Demonstrandum)<br />[💻](https://github.com/l3kn/stumpy_core/commits?author=Demonstrandum "Code") |
 | :---: | :---: | :---: |
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
