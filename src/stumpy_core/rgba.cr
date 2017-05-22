@@ -147,22 +147,22 @@ module StumpyCore
       r = Utils.scale_up(r * 255.0, 8)
       g = Utils.scale_up(g * 255.0, 8)
       b = Utils.scale_up(b * 255.0, 8)
-      alpha = Utils.scale_up(alpha, n)
+      alpha = Utils.scale_up(alpha, 8)
       RGBA.new(r, g, b, alpha)
     end
 
-    def self.from_hsl(hsla)
+    def self.from_hsla(hsla)
       h, s, l, a = hsla
-      from_hsla_n(h, s, l, UInt16::MAX)
+      from_hsla(h, s, l, a)
     end
 
     def self.from_hsl(h, s, l)
-      from_hsla_n(h, s, l, UInt16::MAX)
+      from_hsla(h, s, l, UInt16::MAX)
     end
 
     def self.from_hsl(hsl)
       h, s, l = hsl
-      from_hsla_n(h, s, l, UInt16::MAX)
+      from_hsla(h, s, l, UInt16::MAX)
     end
 
     def self.from_rgb(r, g, b)
