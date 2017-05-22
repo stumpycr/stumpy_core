@@ -120,7 +120,16 @@ module StumpyCore
       to_rgb8
     end
 
-    def self.from_hsl(h, s, l)
+    def self.get_hsl_hue(a, b, c)
+      if (c < 0); (c += 1.0) end
+      if (c > 1); (c -= 1.0) end
+      if (c < 1.0/6.0); (return a + (b - a) * 6.0 * c) end
+      if (c < 1.0/2.0); (return b) end
+      if (c < 2.0/3.0); (return a + (b - a) * (2.0/3.0 - c) * 6.0) end
+      return a
+    end
+
+    def self.from_hsla_n(h, s, l, alpha, n)
       h /= 360.0
       s /= 100.0
       l /= 100.0
@@ -128,22 +137,30 @@ module StumpyCore
       if s == 0
         r = g = b = l
       else
-        hue = Proc(Float64, Float64, Float64, Float64).new do | a, b, c |
-          (c < 0) ? (c += 1.0) : "pass"
-          (c > 1) ? (c -= 1.0) : "pass"
-          (c < 1.0/6.0) ? (return a + (b - a) * 6.0 * c) : "pass"
-          (c < 1.0/2.0) ? (return b) : "pass"
-          (c < 2.0/3.0) ? (return a + (b - a) * (2.0/3.0 - c) * 6.0) : "pass"
-          return a
-        end
         b = (l < 0.5) ? (l * (1.0 + s)) : (l + s - l * s)
         a = 2.0 * l - b
-        r = hue.call(a, b, h + 1.0/3.0)
-        g = hue.call(a, b, h)
-        b = hue.call(a, b, h - 1.0/3.0)
+        r = get_hsl_hue(a, b, h + 1.0/3.0)
+        g = get_hsl_hue(a, b, h)
+        b = get_hsl_hue(a, b, h - 1.0/3.0)
       end
 
-      return from_rgb_n((r * 255.0).round.to_i, (g * 255.0).round.to_i, (b * 255.0).round.to_i, 8)
+      r = Utils.scale_up(r * 255.0, n)
+      g = Utils.scale_up(g * 255.0, n)
+      b = Utils.scale_up(b * 255.0, n)
+      alpha = Utils.scale_up(alpha, n)
+      RGBA.new(r, g, b, alpha)
+    end
+
+    def self.from_hsla(h, s, l, a)
+      from_hsla_n(h, s, l, a, 8)
+    end
+
+    def self.from_hsl_n(h, s, l, n)
+      from_hsla_n(h, s, l, UInt16::MAX, n)
+    end
+
+    def self.from_hsl(h, s, l)
+      from_hsla_n(h, s, l, UInt16::MAX, 8)
     end
 
     def self.from_rgb(r, g, b)
