@@ -150,5 +150,54 @@ module StumpyCore
         a.to_f / UInt16::MAX,
       }
     end
+
+    private def self.get_hsl_hue(a, b, c)
+      c += 1.0 if c < 0
+      c -= 1.0 if c > 1
+
+      if c < 1.0/6.0
+        a + (b - a) * 6.0 * c
+      elsif c < 1.0/2.0
+        b
+      elsif c < 2.0/3.0
+        a + (b - a) * (2.0/3.0 - c) * 6.0
+      else
+        a
+      end
+    end
+
+    def self.from_hsla(h, s, l, alpha)
+      h /= 360.0
+      s /= 100.0
+      l /= 100.0
+
+      if s == 0
+        from_relative(l, l, l, alpha)
+      else
+        b = l < 0.5 ? l * (1.0 + s) : l + s - l * s
+        a = 2.0 * l - b
+
+        from_relative(
+          get_hsl_hue(a, b, h + 1.0/3.0),
+          get_hsl_hue(a, b, h),
+          get_hsl_hue(a, b, h - 1.0/3.0),
+          alpha
+        )
+      end
+    end
+
+    def self.from_hsla(hsla)
+      h, s, l, a = hsla
+      from_hsla(h, s, l, a)
+    end
+
+    def self.from_hsl(h, s, l)
+      from_hsla(h, s, l, 1.0)
+    end
+
+    def self.from_hsl(hsl)
+      h, s, l = hsl
+      from_hsla(h, s, l, 1.0)
+    end
   end
 end
