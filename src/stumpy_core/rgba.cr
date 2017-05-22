@@ -151,11 +151,21 @@ module StumpyCore
       RGBA.new(r, g, b, alpha)
     end
 
+    def self.from_hsla_n(hsla, n)
+      h, s, l, a = hsla
+      from_hsla_n(h, s, l, a, n)
+    end
+
     def self.from_hsla(h, s, l, a)
       from_hsla_n(h, s, l, a, 8)
     end
 
     def self.from_hsl_n(h, s, l, n)
+      from_hsla_n(h, s, l, UInt16::MAX, n)
+    end
+
+    def self.from_hsl_n(hsl, n)
+      h, s, l = hsl
       from_hsla_n(h, s, l, UInt16::MAX, n)
     end
 
