@@ -92,11 +92,16 @@ module StumpyCore
     end
 
     def self.from_hex(hex : String)
-      raise "Invalid hex color: #{hex}" if hex.size != 7 || hex[0] != '#'
-
-      r = hex[1,2].to_i(16)
-      g = hex[3,2].to_i(16)
-      b = hex[5,2].to_i(16)
+      raise "Invalid hex color: #{hex}" if (hex.size != 7 && hex.size != 4) || hex[0] != '#'
+      if hex.size == 4
+        r = (hex[1] * 2).to_i(16)
+        g = (hex[2] * 2).to_i(16)
+        b = (hex[3] * 2).to_i(16)
+      else
+        r = hex[1,2].to_i(16)
+        g = hex[3,2].to_i(16)
+        b = hex[5,2].to_i(16)
+      end
       from_rgb_n(r, g, b, 8)
     end
 
