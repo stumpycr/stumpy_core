@@ -94,9 +94,9 @@ module StumpyCore
     def self.from_hex(hex : String)
       raise "Invalid hex color: #{hex}" if (hex.size != 7 && hex.size != 4) || hex[0] != '#'
       if hex.size == 4
-        r = (hex[1] * 2).to_i(16)
-        g = (hex[2] * 2).to_i(16)
-        b = (hex[3] * 2).to_i(16)
+        r = hex[1].to_i(16) * 17
+        g = hex[2].to_i(16) * 17
+        b = hex[3].to_i(16) * 17
       else
         r = hex[1,2].to_i(16)
         g = hex[3,2].to_i(16)
