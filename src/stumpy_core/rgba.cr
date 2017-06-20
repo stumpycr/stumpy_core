@@ -204,5 +204,67 @@ module StumpyCore
       h, s, l = hsl
       from_hsla(h, s, l, 1.0)
     end
+
+    def self.from_hsva(h, s, v, a)
+      h, s, v, a = h / 360.0, s / 100.0, v / 100.0, a.to_f
+      unless s <= 0
+        h *= 6.0
+        h = 0.0 if h >= 6
+        i = h.floor
+        i1 = v * (1 - s)
+        i2 = v * (1 - s * (h - i))
+        i3 = v * (1 - s * (1 - (h - i)))
+
+        if i == 0
+          r, g, b = v, i3, i1
+        elsif i == 1
+          r, g, b = i2, v, i1
+        elsif i == 2
+          r, g, b = i1, v, i3
+        elsif i == 3
+          r, g, b = i1, i2, v
+        elsif i == 4
+          r, g, b = i3, i1, v
+        else
+          r, g, b = v, i1, i2
+        end
+        return from_relative(r, g, b, a)
+      end
+
+      r, g, b = [v] * 3
+      return from_relative(r, g, b, a)
+    end
+
+    def self.from_hsva(hsv, a)
+      h, s, v = hsv
+      from_hsva(h, s, v, a)
+    end
+
+    def self.from_hsba(h, s, b, a)
+      from_hsva(h, s, b, a)
+    end
+
+    def self.from_hsba(hsb, a)
+      h, s, b = hsb
+      from_hsva(h, s, b, a)
+    end
+
+    def self.from_hsv(h, s, v)
+      from_hsva(h, s, v, 1)
+    end
+
+    def self.from_hsv(hsv)
+      h, s, v = hsv
+      from_hsva(h, s, v, 1)
+    end
+
+    def self.from_hsb(h, s, b)
+      from_hsva(h, s, b, 1)
+    end
+
+    def self.from_hsb(hsb)
+      h, s, b = hsb
+      from_hsva(h, s, b, 1)
+    end
   end
 end
