@@ -41,7 +41,7 @@ checkerboard = Canvas.new(256, 256) do |x, y|
 end
 
 spectrum  = Canvas.new(361, 101) { |x, y| RGBA.from_hsl(x, 100, y) }
-spectrum2 = Canvas.new(361, 101) { |x, y| RGBA.from_hsba([x, 100, y], a) }
+spectrum2 = Canvas.new(361, 101) { |x, y| RGBA.from_hsba([x, 100, y], 1) }
 ```
 
 ![rainbow image](images/rainbow.png)
@@ -63,11 +63,19 @@ spectrum2 = Canvas.new(361, 101) { |x, y| RGBA.from_hsba([x, 100, y], a) }
     * `StumpyCore::RGBA.from_gray_n(grayscale_value, n)`
     * `StumpyCore::RGBA.from_graya_n(grayscale_value, alpha, n)`
     * `StumpyCore::RGBA.from_rgb_n(r, g, b, n)`
-    * `StumpyCore::RGBA.from_rgba_n(r, g, b, alpha, n)`, alpha = 0..1
-    * `StumpyCore::RGBA.from_hsl(h, s, l)`, h = 0..360°, s = 0..100%, l = 0..100%
+    * `StumpyCore::RGBA.from_rgba_n(r, g, b, alpha, n)` where alpha = `0..1`
+    * `StumpyCore::RGBA.from_hsl(h, s, l)` where
+
+        h = `0..360°`, s = `0..100%`, l = `0..100%`
     * `StumpyCore::RGBA.from_hsla(h, s, l, alpha)`
-    * `StumpyCore::RGBA.from_hsv(h, s, v)` *or* `...from_hsb(h, s, b)`, h = 0..360°, s = 0..100%, b/v = 0..100%
-    * `StumpyCore::RGBA.from_hsva(h, s, v, alpha)` *or* `...from_hsba(h, s, b, alpha)`
+    * `StumpyCore::RGBA.from_hsv(h, s, v)` *or*
+
+        `StumpyCore::RGBA.from_hsb(h, s, b)` where
+
+        h = `0..360°`, s = `0..100%`, b *or* v = `0..100%`
+    * `StumpyCore::RGBA.from_hsva(h, s, v, alpha)` *or*
+
+        `StumpyCore::RGBA.from_hsba(h, s, b, alpha)` where alpha = `0..1`
     * All of the above (except `from_gray_n`) work with tuples/arrays, too:
 
         (`StumpyCore::RGBA.from_rgba_n({r, g, b, alpha}, n)`)
