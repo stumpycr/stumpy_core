@@ -92,11 +92,16 @@ module StumpyCore
     end
 
     def self.from_hex(hex : String)
-      raise "Invalid hex color: #{hex}" if hex.size != 7 || hex[0] != '#'
-
-      r = hex[1,2].to_i(16)
-      g = hex[3,2].to_i(16)
-      b = hex[5,2].to_i(16)
+      raise "Invalid hex color: #{hex}" if (hex.size != 7 && hex.size != 4) || hex[0] != '#'
+      if hex.size == 4
+        r = hex[1].to_i(16) * 17
+        g = hex[2].to_i(16) * 17
+        b = hex[3].to_i(16) * 17
+      else
+        r = hex[1,2].to_i(16)
+        g = hex[3,2].to_i(16)
+        b = hex[5,2].to_i(16)
+      end
       from_rgb_n(r, g, b, 8)
     end
 
@@ -149,6 +154,117 @@ module StumpyCore
         b.to_f / UInt16::MAX,
         a.to_f / UInt16::MAX,
       }
+    end
+
+    private def self.get_hsl_hue(a, b, c)
+      c += 1.0 if c < 0
+      c -= 1.0 if c > 1
+
+      if c < 1.0/6.0
+        a + (b - a) * 6.0 * c
+      elsif c < 1.0/2.0
+        b
+      elsif c < 2.0/3.0
+        a + (b - a) * (2.0/3.0 - c) * 6.0
+      else
+        a
+      end
+    end
+
+    def self.from_hsla(h, s, l, alpha)
+      h /= 360.0
+      s /= 100.0
+      l /= 100.0
+
+      if s == 0
+        from_relative(l, l, l, alpha)
+      else
+        b = l < 0.5 ? l * (1.0 + s) : l + s - l * s
+        a = 2.0 * l - b
+
+        from_relative(
+          get_hsl_hue(a, b, h + 1.0/3.0),
+          get_hsl_hue(a, b, h),
+          get_hsl_hue(a, b, h - 1.0/3.0),
+          alpha
+        )
+      end
+    end
+
+    def self.from_hsla(hsla)
+      h, s, l, a = hsla
+      from_hsla(h, s, l, a)
+    end
+
+    def self.from_hsl(h, s, l)
+      from_hsla(h, s, l, 1.0)
+    end
+
+    def self.from_hsl(hsl)
+      h, s, l = hsl
+      from_hsla(h, s, l, 1.0)
+    end
+
+    def self.from_hsva(h, s, v, a)
+      h, s, v, a = h / 360.0, s / 100.0, v / 100.0, a.to_f
+      unless s <= 0
+        h *= 6.0
+        h = 0.0 if h >= 6
+        i = h.floor
+        i1 = v * (1 - s)
+        i2 = v * (1 - s * (h - i))
+        i3 = v * (1 - s * (1 - (h - i)))
+
+        if i == 0
+          r, g, b = v, i3, i1
+        elsif i == 1
+          r, g, b = i2, v, i1
+        elsif i == 2
+          r, g, b = i1, v, i3
+        elsif i == 3
+          r, g, b = i1, i2, v
+        elsif i == 4
+          r, g, b = i3, i1, v
+        else
+          r, g, b = v, i1, i2
+        end
+        return from_relative(r, g, b, a)
+      end
+
+      r, g, b = [v] * 3
+      return from_relative(r, g, b, a)
+    end
+
+    def self.from_hsva(hsv, a)
+      h, s, v = hsv
+      from_hsva(h, s, v, a)
+    end
+
+    def self.from_hsba(h, s, b, a)
+      from_hsva(h, s, b, a)
+    end
+
+    def self.from_hsba(hsb, a)
+      h, s, b = hsb
+      from_hsva(h, s, b, a)
+    end
+
+    def self.from_hsv(h, s, v)
+      from_hsva(h, s, v, 1)
+    end
+
+    def self.from_hsv(hsv)
+      h, s, v = hsv
+      from_hsva(h, s, v, 1)
+    end
+
+    def self.from_hsb(h, s, b)
+      from_hsva(h, s, b, 1)
+    end
+
+    def self.from_hsb(hsb)
+      h, s, b = hsb
+      from_hsva(h, s, b, 1)
     end
   end
 end

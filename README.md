@@ -39,10 +39,16 @@ checkerboard = Canvas.new(256, 256) do |x, y|
     RGBA.from_hex("#000000")
   end
 end
+
+spectrum  = Canvas.new(361, 101) { |x, y| RGBA.from_hsl(x, 100, y) }
+spectrum2 = Canvas.new(361, 101) { |x, y| RGBA.from_hsba([x, 100, y], 1) }
 ```
 
 ![rainbow image](images/rainbow.png)
 ![checkerboard image](images/checkerboard.png)
+![spectrum image](images/spectrum.png)
+![spectrum2 image](images/hsv-spectrum.png)
+
 
 ## Interface
 
@@ -57,9 +63,22 @@ end
     * `StumpyCore::RGBA.from_gray_n(grayscale_value, n)`
     * `StumpyCore::RGBA.from_graya_n(grayscale_value, alpha, n)`
     * `StumpyCore::RGBA.from_rgb_n(r, g, b, n)`
-    * `StumpyCore::RGBA.from_rgba_n(r, g, b, alpha, n)`
-    * All of the above (except `from_gray_n`) work with tuples/arrays, too
-      (`StumpyCore::RGBA.from_rgba_n({r, g, b, alpha}, n)`
+    * `StumpyCore::RGBA.from_rgba_n(r, g, b, alpha, n)` where alpha = `0..1`
+    * `StumpyCore::RGBA.from_hsl(h, s, l)` where
+
+        h = `0..360°`, s = `0..100%`, l = `0..100%`
+    * `StumpyCore::RGBA.from_hsla(h, s, l, alpha)`
+    * `StumpyCore::RGBA.from_hsv(h, s, v)` *or*
+
+        `StumpyCore::RGBA.from_hsb(h, s, b)` where
+
+        h = `0..360°`, s = `0..100%`, b *or* v = `0..100%`
+    * `StumpyCore::RGBA.from_hsva(h, s, v, alpha)` *or*
+
+        `StumpyCore::RGBA.from_hsba(h, s, b, alpha)` where alpha = `0..1`
+    * All of the above (except `from_gray_n`) work with tuples/arrays, too:
+
+        (`StumpyCore::RGBA.from_rgba_n({r, g, b, alpha}, n)`)
     * `StumpyCore::RGBA.from_hex(color)`, e.g. `color = "#ff0000"`
 
 * `StumpyCore::Canvas`, two dimensional Array of RGBA value
@@ -79,8 +98,8 @@ end
 Thanks goes to these wonderful people ([emoji key](https://github.com/kentcdodds/all-contributors#emoji-key)):
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
-| [<img src="https://avatars.githubusercontent.com/u/2060269?v=3" width="100px;"/><br /><sub>Leon</sub>](https://github.com/l3kn)<br />[💻](https://github.com/l3kn/stumpy_core/commits?author=l3kn) | [<img src="https://avatars.githubusercontent.com/u/1298501?v=3" width="100px;"/><br /><sub>Ian Rash</sub>](https://github.com/redcodefinal)<br />[💻](https://github.com/l3kn/stumpy_core/commits?author=redcodefinal) |
-| :---: | :---: |
+| [<img src="https://avatars.githubusercontent.com/u/2060269?v=3" width="100px;"/><br /><sub>Leon</sub>](https://github.com/l3kn)<br />[💻](https://github.com/l3kn/stumpy_core/commits?author=l3kn "Code") | [<img src="https://avatars.githubusercontent.com/u/1298501?v=3" width="100px;"/><br /><sub>Ian Rash</sub>](http://broken-kami.tumblr.com)<br />[💻](https://github.com/l3kn/stumpy_core/commits?author=redcodefinal "Code") | [<img src="https://avatars2.githubusercontent.com/u/26842759?v=3" width="100px;"/><br /><sub>Sam</sub>](https://github.com/Demonstrandum)<br />[💻](https://github.com/l3kn/stumpy_core/commits?author=Demonstrandum "Code") |
+| :---: | :---: | :---: |
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors](https://github.com/kentcdodds/all-contributors) specification. Contributions of any kind welcome!
