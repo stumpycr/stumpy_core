@@ -49,11 +49,13 @@ module StumpyCore
       end
     end
 
+    # From n-bit grayscale
     def self.from_gray_n(value, n)
       gray = Utils.scale_up(value, n)
       RGBA.new(gray, gray, gray, UInt16::MAX)
     end
 
+    # From n-bit grayscale + alpha
     def self.from_graya_n(values, n)
       g, a = values
       from_graya_n(g, a, n)
@@ -65,7 +67,7 @@ module StumpyCore
       RGBA.new(gray, gray, gray, alpha)
     end
 
-
+    # From n-bit rgb
     def self.from_rgb_n(values, n)
       r, g, b = values
       from_rgb_n(r, g, b, n)
@@ -78,6 +80,7 @@ module StumpyCore
       RGBA.new(red, green, blue, UInt16::MAX)
     end
 
+    # From n-bit rgb + alpha
     def self.from_rgba_n(values, n)
       r, g, b, a = values
       from_rgba_n(r, g, b, a, n)
@@ -91,18 +94,43 @@ module StumpyCore
       RGBA.new(red, green, blue, alpha)
     end
 
+    # From hex color name, #xxx and #xxxxxx
     def self.from_hex(hex : String)
-      raise "Invalid hex color: #{hex}" if (hex.size != 7 && hex.size != 4) || hex[0] != '#'
-      if hex.size == 4
-        r = hex[1].to_i(16) * 17
-        g = hex[2].to_i(16) * 17
-        b = hex[3].to_i(16) * 17
-      else
+      if hex.size == 0 || hex[0] != '#'
+        raise "Invalid hex color: #{hex}"
+      end
+
+      case hex.size
+      when 4
+        r = hex[1].to_i(16)
+        g = hex[2].to_i(16)
+        b = hex[3].to_i(16)
+        from_rgb_n(r, g, b, 4)
+      when 5
+        a = hex[1].to_i(16)
+        r = hex[2].to_i(16)
+        g = hex[3].to_i(16)
+        b = hex[4].to_i(16)
+        from_rgba_n(r, g, b, a, 4)
+      when 7
         r = hex[1,2].to_i(16)
         g = hex[3,2].to_i(16)
         b = hex[5,2].to_i(16)
+        from_rgb_n(r, g, b, 8)
+      when 9
+        a = hex[1,2].to_i(16)
+        r = hex[3,2].to_i(16)
+        g = hex[5,2].to_i(16)
+        b = hex[7,2].to_i(16)
+        from_rgba_n(r, g, b, a, 8)
+      else
+        raise "Invalid hex color: #{hex}"
       end
-      from_rgb_n(r, g, b, 8)
+    end
+
+    def self.from_rgb8(values)
+      r, g, b = values
+      self.from_rgb(r, g, b)
     end
 
     def self.from_rgb8(r, g, b)
@@ -117,16 +145,14 @@ module StumpyCore
       }
     end
 
+    # From / To rgb + alpha, 8 bit
+    def self.from_rgba8(values)
+      r, g, b, a = values
+      self.from_rgba8(r, g, b, a)
+    end
+
     def self.from_rgba8(r, g, b, a)
       from_rgba_n(r, g, b, a, 8)
-    end
-
-    def to_rgb
-      to_rgb8
-    end
-
-    def self.from_rgb(r, g, b)
-      self.from_rgb8(r, g, b)
     end
 
     def to_rgba
@@ -136,6 +162,12 @@ module StumpyCore
         Utils.scale_from_to(b, 16, 8).to_u8,
         Utils.scale_from_to(a, 16, 8).to_u8,
       }
+    end
+
+    # From / To relative
+    def self.from_relative(values)
+      r, g, b, a = values
+      self.from_relative(r, g, b, a)
     end
 
     def self.from_relative(r, g, b, a)
@@ -156,6 +188,7 @@ module StumpyCore
       }
     end
 
+    # From hsl
     private def self.get_hsl_hue(a, b, c)
       c += 1.0 if c < 0
       c -= 1.0 if c > 1
@@ -176,7 +209,7 @@ module StumpyCore
       s /= 100.0
       l /= 100.0
 
-      if s == 0
+      if s == 0.0
         from_relative(l, l, l, alpha)
       else
         b = l < 0.5 ? l * (1.0 + s) : l + s - l * s
@@ -191,8 +224,8 @@ module StumpyCore
       end
     end
 
-    def self.from_hsla(hsla)
-      h, s, l, a = hsla
+    def self.from_hsla(values)
+      h, s, l, a = values
       from_hsla(h, s, l, a)
     end
 
@@ -200,14 +233,20 @@ module StumpyCore
       from_hsla(h, s, l, 1.0)
     end
 
-    def self.from_hsl(hsl)
-      h, s, l = hsl
+    def self.from_hsl(values)
+      h, s, l = values
       from_hsla(h, s, l, 1.0)
     end
 
-    def self.from_hsva(h, s, v, a)
-      h, s, v, a = h / 360.0, s / 100.0, v / 100.0, a.to_f
-      unless s <= 0
+    # From hsv
+    def self.from_hsva(h, s, v, alpha)
+      h /= 360.0
+      s /= 100.0
+      v /= 100.0
+
+      if s == 0.0
+        from_relative(v, v, v, a)
+      else
         h *= 6.0
         h = 0.0 if h >= 6
         i = h.floor
@@ -215,56 +254,35 @@ module StumpyCore
         i2 = v * (1 - s * (h - i))
         i3 = v * (1 - s * (1 - (h - i)))
 
-        if i == 0
-          r, g, b = v, i3, i1
-        elsif i == 1
-          r, g, b = i2, v, i1
-        elsif i == 2
-          r, g, b = i1, v, i3
-        elsif i == 3
-          r, g, b = i1, i2, v
-        elsif i == 4
-          r, g, b = i3, i1, v
-        else
-          r, g, b = v, i1, i2
+        case i
+        when 0
+          from_relative(v, i3, i1, a)
+        when 1
+          from_relative(i2, v, i1, a)
+        when 2
+          from_relative(i1, v, i3, a)
+        when 3
+          from_relative(i1, i2, v, a)
+        when 4
+          from_relative(i3, i1, v, a)
+        when 5
+          from_relative(v, i1, i2, a)
         end
-        return from_relative(r, g, b, a)
       end
-
-      r, g, b = [v] * 3
-      return from_relative(r, g, b, a)
     end
 
-    def self.from_hsva(hsv, a)
-      h, s, v = hsv
+    def self.from_hsva(values)
+      h, s, v, a = values
       from_hsva(h, s, v, a)
     end
 
-    def self.from_hsba(h, s, b, a)
-      from_hsva(h, s, b, a)
-    end
-
-    def self.from_hsba(hsb, a)
-      h, s, b = hsb
-      from_hsva(h, s, b, a)
-    end
-
     def self.from_hsv(h, s, v)
-      from_hsva(h, s, v, 1)
+      from_hsva(h, s, v, 1.0)
     end
 
-    def self.from_hsv(hsv)
-      h, s, v = hsv
-      from_hsva(h, s, v, 1)
-    end
-
-    def self.from_hsb(h, s, b)
-      from_hsva(h, s, b, 1)
-    end
-
-    def self.from_hsb(hsb)
-      h, s, b = hsb
-      from_hsva(h, s, b, 1)
+    def self.from_hsv(values)
+      h, s, l = values
+      from_hsva(h, s, l, 1.0)
     end
   end
 end
