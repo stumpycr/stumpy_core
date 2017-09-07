@@ -1,5 +1,7 @@
 # stumpy_core
 
+[Documentation](https://docs.leonrische.me/stumpy_core/)
+
 ## Usage
 
 This library is not very useful on its own
