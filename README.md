@@ -53,50 +53,6 @@ spectrum2 = Canvas.new(361, 101) { |x, y| RGBA.from_hsba([x, 100, y], 1) }
 ![spectrum image](images/spectrum.png)
 ![spectrum2 image](images/hsv-spectrum.png)
 
-
-## Interface
-
-* `StumpyCore::RGBA`, 16-bit rgba color
-  * `rgba.r` red channel
-  * `rgba.g` green channel
-  * `rgba.b` blue channel
-  * `rgba.a` alpha channel
-  * `rgba.to_rgba8` returns a tuple of 4 8-bit values `{ r, g, b, a}`
-  * `rgba.to_rgb8` returns a tuple of 3 8-bit values  `{ r, g, b }`
-  * Helper functions to create colors from n-bit values:
-    * `StumpyCore::RGBA.from_gray_n(grayscale_value, n)`
-    * `StumpyCore::RGBA.from_graya_n(grayscale_value, alpha, n)`
-    * `StumpyCore::RGBA.from_rgb_n(r, g, b, n)`
-    * `StumpyCore::RGBA.from_rgba_n(r, g, b, alpha, n)` where alpha = `0..1`
-    * `StumpyCore::RGBA.from_hsl(h, s, l)` where
-
-        h = `0..360°`, s = `0..100%`, l = `0..100%`
-    * `StumpyCore::RGBA.from_hsla(h, s, l, alpha)`
-    * `StumpyCore::RGBA.from_hsv(h, s, v)` *or*
-
-        `StumpyCore::RGBA.from_hsb(h, s, b)` where
-
-        h = `0..360°`, s = `0..100%`, b *or* v = `0..100%`
-    * `StumpyCore::RGBA.from_hsva(h, s, v, alpha)` *or*
-
-        `StumpyCore::RGBA.from_hsba(h, s, b, alpha)` where alpha = `0..1`
-    * All of the above (except `from_gray_n`) work with tuples/arrays, too:
-
-        (`StumpyCore::RGBA.from_rgba_n({r, g, b, alpha}, n)`)
-    * `StumpyCore::RGBA.from_hex(color)`, e.g. `color = "#ff0000"`
-
-* `StumpyCore::Canvas`, two dimensional Array of RGBA value
-  * `canvas.width`
-  * `canvas.height`
-  * `canvas[x, y] = color` to set a color, `x` and `y` need to be in range!
-  * `canvas[x, y]` to get a color, `x` and `y` need to be in range!
-  * `canvas.set(x, y, color)` same as `canvas[x, y] = color`
-  * `canvas.get(x, y)` same as `canvas[x, y]`
-  * `canvas.safe_set(x, y, color)` returns true if setting the color was successful
-  * `canvas.safe_get(x, y)` returns `nil` if `x` or `y` are invalid
-  * `canvas.wrapping_set(x, y, color)` `set` combined with modulo, to ensure `x` and `y` are in range
-  * `canvas.wrapping_get(x, y)` `get` combined with modulo, to ensure `x` and `y` are in range
-
 ## Contributors
 
 Thanks goes to these wonderful people ([emoji key](https://github.com/kentcdodds/all-contributors#emoji-key)):
