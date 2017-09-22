@@ -13,6 +13,8 @@ or saving one to an image file.
 * <https://github.com/stumpycr/stumpy_gif>
 
 ```crystal
+require "stumpy_core"
+
 include StumpyCore
 
 rainbow = Canvas.new(256, 256)
