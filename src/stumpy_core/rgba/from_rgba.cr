@@ -33,11 +33,22 @@ module StumpyCore
     # Shorthand for `from_rgb_n(values, 8)`
     def self.from_rgb8(values)
       r, g, b = values
-      self.from_rgb(r, g, b)
+      self.from_rgb8(r, g, b)
     end
 
     # Shorthand for `from_rgb_n(r, g, b, 8)`
     def self.from_rgb8(r, g, b)
+      from_rgb_n(r, g, b, 8)
+    end
+    
+    # Shorthand for `from_rgb_n(r, g, b, 8)`
+    def self.from_rgb(r, g, b)
+      from_rgb_n(r, g, b, 8)
+    end
+    
+    # Shorthand for `from_rgb_n(values, 8)`
+    def self.from_rgb(values)
+      r, g, b = values
       from_rgb_n(r, g, b, 8)
     end
 
@@ -56,12 +67,23 @@ module StumpyCore
       r, g, b, a = values
       self.from_rgba8(r, g, b, a)
     end
-
+    
     # Shorthand for `from_rgba_n(r, g, b, a, 8)`
     def self.from_rgba8(r, g, b, a)
       from_rgba_n(r, g, b, a, 8)
     end
 
+    # Shorthand for `from_rgba_n(values, 8)`
+    def self.from_rgba(values)
+      r, g, b, a = values
+      self.from_rgba8(r, g, b, a)
+    end
+    
+    # Shorthand for `from_rgba_n(r, g, b, a, 8)`
+    def self.from_rgba(r, g, b, a)
+      from_rgba_n(r, g, b, a, 8)
+    end
+    
     # Create a 8-bit `{r, g, b, a}` tuple.
     def to_rgba
       {
