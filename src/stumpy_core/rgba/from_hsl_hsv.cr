@@ -98,7 +98,9 @@ module StumpyCore
           from_relative(i1, i2, v, alpha)
         when 4
           from_relative(i3, i1, v, alpha)
-        when 5
+        # i == 5 is the only other option
+        # Use `else` instead of `when 5` so the return value can't be `nil`
+        else
           from_relative(v, i1, i2, alpha)
         end
       end
