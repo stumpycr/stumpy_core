@@ -78,7 +78,7 @@ module StumpyCore
       v /= 100.0
 
       if s == 0.0
-        from_relative(v, v, v, a)
+        from_relative(v, v, v, alpha)
       else
         h *= 6.0
         h = 0.0 if h >= 6
@@ -89,17 +89,17 @@ module StumpyCore
 
         case i
         when 0
-          from_relative(v, i3, i1, a)
+          from_relative(v, i3, i1, alpha)
         when 1
-          from_relative(i2, v, i1, a)
+          from_relative(i2, v, i1, alpha)
         when 2
-          from_relative(i1, v, i3, a)
+          from_relative(i1, v, i3, alpha)
         when 3
-          from_relative(i1, i2, v, a)
+          from_relative(i1, i2, v, alpha)
         when 4
-          from_relative(i3, i1, v, a)
+          from_relative(i3, i1, v, alpha)
         when 5
-          from_relative(v, i1, i2, a)
+          from_relative(v, i1, i2, alpha)
         end
       end
     end

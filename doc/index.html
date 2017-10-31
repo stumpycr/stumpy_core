@@ -52,6 +52,8 @@
 <div id="main-content">
 <h1>stumpy_core</h1>
 
+<p><a href="https://docs.leonrische.me/stumpy_core/" target="_blank">Documentation</a></p>
+
 <h2>Usage</h2>
 
 <p>This library is not very useful on its own
@@ -61,7 +63,9 @@ or saving one to an image file.</p>
 
 <ul><li>&lt;https://github.com/stumpycr/stumpy_png></li><li>&lt;https://github.com/stumpycr/stumpy_gif></li></ul>
 
-<pre><code class='language-crystal'><span class="k">include</span> <span class="t">StumpyCore</span>
+<pre><code class='language-crystal'><span class="k">require</span> <span class="s">&quot;stumpy_core&quot;</span>
+
+<span class="k">include</span> <span class="t">StumpyCore</span>
 
 rainbow <span class="o">=</span> <span class="t">Canvas</span>.<span class="k">new</span>(<span class="n">256</span>, <span class="n">256</span>)
 (<span class="n">0</span>...<span class="n">255</span>).each <span class="k">do</span> <span class="o">|</span>x<span class="o">|</span>
@@ -97,27 +101,6 @@ spectrum2 <span class="o">=</span> <span class="t">Canvas</span>.<span class="k"
 <img src="images/checkerboard.png" alt="checkerboard image"/>
 <img src="images/spectrum.png" alt="spectrum image"/>
 <img src="images/hsv-spectrum.png" alt="spectrum2 image"/></p>
-
-<h2>Interface</h2>
-
-<ul><li><code><a href="StumpyCore/RGBA.html">StumpyCore::RGBA</a></code>, 16-bit rgba color</li><ul><li><code>rgba.r</code> red channel</li><li><code>rgba.g</code> green channel</li><li><code>rgba.b</code> blue channel</li><li><code>rgba.a</code> alpha channel</li><li><code>rgba.to_rgba8</code> returns a tuple of 4 8-bit values <code>{ r, g, b, a}</code></li><li><code>rgba.to_rgb8</code> returns a tuple of 3 8-bit values  <code>{ r, g, b }</code></li><li>Helper functions to create colors from n-bit values:</li><li><code>StumpyCore::RGBA.from_gray_n(grayscale_value, n)</code></li><li><code>StumpyCore::RGBA.from_graya_n(grayscale_value, alpha, n)</code></li><li><code>StumpyCore::RGBA.from_rgb_n(r, g, b, n)</code></li><li><code>StumpyCore::RGBA.from_rgba_n(r, g, b, alpha, n)</code> where alpha = <code>0..1</code></li><li><code>StumpyCore::RGBA.from_hsl(h, s, l)</code> where</li></ul></ul>
-
-<pre><code>    h <span class="o">=</span> <span class="s">&#96;0..360°&#96;</span>, s <span class="o">=</span> <span class="s">&#96;0..100&#37;&#96;</span>, l <span class="o">=</span> <span class="s">&#96;0..100&#37;&#96;</span>
-<span class="o">*</span> <span class="s">&#96;StumpyCore::RGBA.from_hsla&#40;h, s, l, alpha&#41;&#96;</span>
-<span class="o">*</span> <span class="s">&#96;StumpyCore::RGBA.from_hsv&#40;h, s, v&#41;&#96;</span> <span class="o">*</span>or<span class="o">*</span>
-
-    <span class="s">&#96;StumpyCore::RGBA.from_hsb&#40;h, s, b&#41;&#96;</span> where
-
-    h <span class="o">=</span> <span class="s">&#96;0..360°&#96;</span>, s <span class="o">=</span> <span class="s">&#96;0..100&#37;&#96;</span>, b <span class="o">*</span>or<span class="o">*</span> v <span class="o">=</span> <span class="s">&#96;0..100&#37;&#96;</span>
-<span class="o">*</span> <span class="s">&#96;StumpyCore::RGBA.from_hsva&#40;h, s, v, alpha&#41;&#96;</span> <span class="o">*</span>or<span class="o">*</span>
-
-    <span class="s">&#96;StumpyCore::RGBA.from_hsba&#40;h, s, b, alpha&#41;&#96;</span> where alpha <span class="o">=</span> <span class="s">&#96;0..1&#96;</span>
-<span class="o">*</span> <span class="t">All</span> <span class="k">of</span> the above (except <span class="s">&#96;from_gray_n&#96;</span>) work <span class="k">with</span> tuples<span class="s">/arrays, too:
-
-    &#40;&#96;StumpyCore::RGBA.from_rgba_n&#40;&#123;r, g, b, alpha&#125;, n&#41;&#96;&#41;
-* &#96;StumpyCore::RGBA.from_hex&#40;color&#41;&#96;, e.g. &#96;color &#61; &quot;#ff0000&quot;&#96;</code></pre>
-
-<ul><li><code><a href="StumpyCore/Canvas.html">StumpyCore::Canvas</a></code>, two dimensional Array of RGBA value</li><ul><li><code>canvas.width</code></li><li><code>canvas.height</code></li><li><code>canvas[x, y] = color</code> to set a color, <code>x</code> and <code>y</code> need to be in range!</li><li><code>canvas[x, y]</code> to get a color, <code>x</code> and <code>y</code> need to be in range!</li><li><code>canvas.set(x, y, color)</code> same as <code>canvas[x, y] = color</code></li><li><code>canvas.get(x, y)</code> same as <code>canvas[x, y]</code></li><li><code>canvas.safe_set(x, y, color)</code> returns true if setting the color was successful</li><li><code>canvas.safe_get(x, y)</code> returns <code>nil</code> if <code>x</code> or <code>y</code> are invalid</li><li><code>canvas.wrapping_set(x, y, color)</code> <code>set</code> combined with modulo, to ensure <code>x</code> and <code>y</code> are in range</li><li><code>canvas.wrapping_get(x, y)</code> <code>get</code> combined with modulo, to ensure <code>x</code> and <code>y</code> are in range</li></ul></ul>
 
 <h2>Contributors</h2>
 
