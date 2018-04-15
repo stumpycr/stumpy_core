@@ -44,13 +44,13 @@ module StumpyCore
       end
     end
 
-    # Set the value of pixel `(x, y)` to `color`
+    # Get the value of pixel `(x, y)`
     # without checking if `(x, y)` is a valid position.
     def get(x, y)
       @pixels[x + @width * y]
     end
 
-    # Get the value of pixel `(x, y)` to `color`
+    # Set the value of pixel `(x, y)` to `color`
     # without checking if `(x, y)` is a valid position.
     def set(x, y, color)
       @pixels[x + @width * y] = color
