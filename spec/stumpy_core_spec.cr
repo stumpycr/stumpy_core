@@ -3,6 +3,17 @@ require "./spec_helper"
 include StumpyCore
 
 describe StumpyCore do
+  describe Canvas do
+    describe ".new" do
+      it "throws an error if the size is to big" do
+        size = 2**30
+        expect_raises(Exception) do
+          canvas = Canvas.new(size, size)
+        end
+      end
+    end
+  end
+
   describe RGBA do
     describe ".from_relative" do
       it "is reversible" do
