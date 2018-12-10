@@ -24,17 +24,30 @@ module StumpyCore
   # end
   # ```
   # ![image](https://github.com/stumpycr/stumpy_core/blob/feature/images/rainbow.png?raw=true)
+  #
+  # Because of the way pixels are stored in a `Slice`,
+  # `Canvas`es are limited to `Int32::MAX = 2147483647` pixels in total,
+  # e.g. a maximal size of 46340x46340 for a square image.
   class Canvas
     getter width : Int32
     getter height : Int32
     getter pixels : Slice(RGBA)
 
     def initialize(@width, @height, background = RGBA.new(0_u16, 0_u16, 0_u16, 0_u16))
-      @pixels = Slice.new(@width * @height, background)
+      size = @width.to_i64 * @height
+      if size > Int32::MAX
+        raise "The maximum size of a canvas is #{Int32::MAX} pixels"
+      end
+      @pixels = Slice.new(size, background)
     end
 
     def initialize(@width, @height, &block)
-      @pixels = Slice.new(@width * @height, RGBA.new(0_u16, 0_u16, 0_u16, 0_u16))
+      size = @width.to_i64 * @height
+      if size > Int32::MAX
+        raise "The maximum size of a canvas is #{Int32::MAX} pixels"
+      end
+
+      @pixels = Slice.new(size, RGBA.new(0_u16, 0_u16, 0_u16, 0_u16))
 
       (0...@width).each do |x|
         (0...@height).each do |y|
