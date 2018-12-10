@@ -38,7 +38,7 @@ module StumpyCore
       if size > Int32::MAX
         raise "The maximum size of a canvas is #{Int32::MAX} pixels"
       end
-      @pixels = Slice.new(size, background)
+      @pixels = Slice.new(size.to_i32, background)
     end
 
     def initialize(@width, @height, &block)
@@ -47,7 +47,7 @@ module StumpyCore
         raise "The maximum size of a canvas is #{Int32::MAX} pixels"
       end
 
-      @pixels = Slice.new(size, RGBA.new(0_u16, 0_u16, 0_u16, 0_u16))
+      @pixels = Slice.new(size.to_i32, RGBA.new(0_u16, 0_u16, 0_u16, 0_u16))
 
       (0...@width).each do |x|
         (0...@height).each do |y|
