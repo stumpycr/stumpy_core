@@ -12,6 +12,29 @@ describe StumpyCore do
         end
       end
     end
+
+    describe "map_with_index" do
+      it "works as expected" do
+        canvas = Canvas.new(10, 10, RGBA::RED)
+        res = canvas.map_with_index {|p, x, y, i| i.even? ? RGBA::BLACK : RGBA::WHITE }
+        canvas[0, 0].should eq(RGBA::RED)
+        canvas[1, 0].should eq(RGBA::RED)
+        canvas[0, 1].should eq(RGBA::RED)
+        res[0, 0].should eq(RGBA::BLACK)
+        res[1, 0].should eq(RGBA::WHITE)
+        res[0, 1].should eq(RGBA::BLACK)
+      end
+    end
+
+    describe "map_with_index!" do
+      it "works as expected" do
+        canvas = Canvas.new(10, 10, RGBA::RED)
+        canvas.map_with_index! {|p, x, y, i| i.even? ? RGBA::BLACK : RGBA::WHITE }
+        canvas[0, 0].should eq(RGBA::BLACK)
+        canvas[1, 0].should eq(RGBA::WHITE)
+        canvas[0, 1].should eq(RGBA::BLACK)
+      end
+    end
   end
 
   describe RGBA do
@@ -42,13 +65,13 @@ describe StumpyCore do
 
     describe ".from_gray_n" do
       it "handles 1-bit values" do
-        RGBA.from_gray_n(0, 1).should eq(RGBA.from_hex("#000"))
-        RGBA.from_gray_n(1, 1).should eq(RGBA.from_hex("#fff"))
+        RGBA.from_gray_n(0, 1).should eq(RGBA::BLACK)
+        RGBA.from_gray_n(1, 1).should eq(RGBA::WHITE)
       end
 
       it "handles 8-bit values" do
-        RGBA.from_gray_n(0, 8).should eq(RGBA.from_hex("#000"))
-        RGBA.from_gray_n(255, 8).should eq(RGBA.from_hex("#fff"))
+        RGBA.from_gray_n(0, 8).should eq(RGBA::BLACK)
+        RGBA.from_gray_n(255, 8).should eq(RGBA::WHITE)
 
         v = 180
         color = RGBA.from_gray_n(v, 8)
@@ -58,9 +81,9 @@ describe StumpyCore do
 
     describe ".from_rgb_n" do
       it "handles 1-bit values" do
-        RGBA.from_rgb_n({0, 0, 0}, 1).should eq(RGBA.from_hex("#000"))
-        RGBA.from_rgb_n({1, 0, 0}, 1).should eq(RGBA.from_hex("#f00"))
-        RGBA.from_rgb_n({1, 1, 1}, 1).should eq(RGBA.from_hex("#fff"))
+        RGBA.from_rgb_n({0, 0, 0}, 1).should eq(RGBA::BLACK)
+        RGBA.from_rgb_n({1, 0, 0}, 1).should eq(RGBA::RED)
+        RGBA.from_rgb_n({1, 1, 1}, 1).should eq(RGBA::WHITE)
       end
 
       it "handles 8-bit values" do

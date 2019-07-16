@@ -3,9 +3,9 @@ require "./rgba"
 module StumpyCore
 
   # A canvas is 2D array of `RGBA` pixels
-  # 
+  #
   # To create a canvas of size `400` x `200`
-  # 
+  #
   # ```
   # canvas = StumpyCore::Canvas.new(400, 200)
   # ```
@@ -17,7 +17,7 @@ module StumpyCore
   # ```
   # canvas2 = StumpyCore::Canvas.new(400, 200, RGBA::WHITE)
   # ```
-  # 
+  #
   # ```
   # canvas3 = StumpyCore::Canvas.new(256, 256) do |x, y|
   #   RGBA.from_rgb_n(x, y, 255, 8)
@@ -147,6 +147,30 @@ module StumpyCore
       (0...@width).each do |x|
         (0...@height).each do |y|
           canvas[x, y] = yield self[x, y], x, y
+        end
+      end
+      canvas
+    end
+
+    # Same as `map!` but passes along a fourth parameter
+    # with the index in the `pixels` slice
+    def map_with_index!(&block)
+      (0...@height).each do |y|
+        offset = @width * y
+        (0...@width).each do |x|
+          self[x, y] = yield self[x, y], x, y, offset + x
+        end
+      end
+    end
+
+    # Same as `map` but passes along a fourth parameter
+    # with the index in the `pixels` slice
+    def map_with_index(&block)
+      canvas = Canvas.new(@width, @height)
+      (0...@height).each do |y|
+        offset = @width * y
+        (0...@width).each do |x|
+          canvas[x, y] = yield self[x, y], x, y, offset + x
         end
       end
       canvas
