@@ -50,9 +50,13 @@ module StumpyCore
         new_b = ((self.b * alpha_a) + (other.b * pre_1)) / alpha_0
         new_a = alpha_0 * UInt16::MAX
 
-        RGBA.new(new_r.to_u16, new_g.to_u16, new_b.to_u16, new_a.to_u16)
+        RGBA.new(
+          new_r.floor.to_u16,
+          new_g.floor.to_u16,
+          new_b.floor.to_u16,
+          new_a.to_u16
+        )
       end
     end
-
   end
 end
