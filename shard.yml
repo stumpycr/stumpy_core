@@ -1,5 +1,7 @@
 name: stumpy_core
-version: 1.9.0
+version: 1.9.1
+
+crystal: ">= 0.35.1, < 2.0.0"
 
 authors:
   - Leon Rische <hello@l3kn.de>
