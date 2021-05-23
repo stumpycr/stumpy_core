@@ -19,12 +19,12 @@ module StumpyCore
     # Create a RGBA struct
     # from [HLS](https://en.wikipedia.org/wiki/HSL_and_HSV) values
     # and an alpha component.
-    # 
+    #
     # Range of the values:
     # * __h__ue = 0..360
     # * __s__aturaiton = 0..100
     # * __l__ightness = 0..100
-    # * __a__lpha = 0.0..1.0 
+    # * __a__lpha = 0.0..1.0
     def self.from_hsla(h, s, l, alpha)
       h /= 360.0
       s /= 100.0
@@ -66,12 +66,12 @@ module StumpyCore
     # Create a RGBA struct
     # from [HLV](https://en.wikipedia.org/wiki/HSL_and_HSV) values
     # and an alpha component.
-    # 
+    #
     # Range of the values:
     # * __h__ue = 0..360
     # * __s__aturaiton = 0..100
     # * __v__value = 0..100
-    # * __a__lpha = 0.0..1.0 
+    # * __a__lpha = 0.0..1.0
     def self.from_hsva(h, s, v, alpha)
       h /= 360.0
       s /= 100.0
@@ -98,8 +98,8 @@ module StumpyCore
           from_relative(i1, i2, v, alpha)
         when 4
           from_relative(i3, i1, v, alpha)
-        # i == 5 is the only other option
-        # Use `else` instead of `when 5` so the return value can't be `nil`
+          # i == 5 is the only other option
+          # Use `else` instead of `when 5` so the return value can't be `nil`
         else
           from_relative(v, i1, i2, alpha)
         end

@@ -1,7 +1,6 @@
 require "./rgba"
 
 module StumpyCore
-
   # A canvas is 2D array of `RGBA` pixels
   #
   # To create a canvas of size `400` x `200`
@@ -35,17 +34,13 @@ module StumpyCore
 
     def initialize(@width, @height, background = RGBA.new(0_u16, 0_u16, 0_u16, 0_u16))
       size = @width.to_i64 * @height
-      if size > Int32::MAX
-        raise "The maximum size of a canvas is #{Int32::MAX} total pixels"
-      end
+      check_size!(size)
       @pixels = Slice.new(size.to_i32, background)
     end
 
     def initialize(@width, @height, &block)
       size = @width.to_i64 * @height
-      if size > Int32::MAX
-        raise "The maximum size of a canvas is #{Int32::MAX} total pixels"
-      end
+      check_size!(size)
       @pixels = Slice.new(size.to_i32, RGBA.new(0_u16, 0_u16, 0_u16, 0_u16))
 
       (0...@width).each do |x|
@@ -116,7 +111,6 @@ module StumpyCore
       0 <= x && x < @width && 0 <= y && y < @height
     end
 
-
     # Iterate over each row of the canvas
     # (a `Slice(RGBA)` of size `@width`).
     # The main usecase for this is
@@ -186,7 +180,7 @@ module StumpyCore
         @pixels == other.pixels
     end
 
-    # Past the contents of a second `Canvas`
+    # Paste the contents of a second `Canvas`
     # into this one,
     # starting at position `(x, y)`.
     # The pixels are combined using the `RGBA#over` function.
@@ -198,6 +192,31 @@ module StumpyCore
             self[x + cx, y + cy] = canvas[cx, cy].over(current)
           end
         end
+      end
+    end
+
+    # very basic nearest neighbor image scaling algorithm
+    def resize(new_width, new_height)
+      new_size = new_width.to_i64 * new_height
+      check_size!(new_size)
+      new_pixels = Slice.new(new_size.to_i32, RGBA.new(0_u16, 0_u16, 0_u16, 0_u16))
+      width_ratio = width.to_f / new_width
+      height_ratio = height.to_f / new_height
+      (0...new_height).each do |i|
+        (0...new_width).each do |j|
+          width_precision = (j * width_ratio).floor.to_i
+          height_precision = (i * height_ratio).floor.to_i
+          new_pixels[(i * new_width) + j] = pixels[(height_precision * width) + width_precision]
+        end
+      end
+      @width = new_width
+      @height = new_height
+      @pixels = new_pixels
+    end
+
+    private def check_size!(size)
+      if size > Int32::MAX
+        raise "The maximum size of a canvas is #{Int32::MAX} total pixels"
       end
     end
   end

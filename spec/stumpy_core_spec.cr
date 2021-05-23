@@ -16,7 +16,7 @@ describe StumpyCore do
     describe "map_with_index" do
       it "works as expected" do
         canvas = Canvas.new(10, 10, RGBA::RED)
-        res = canvas.map_with_index {|p, x, y, i| i.even? ? RGBA::BLACK : RGBA::WHITE }
+        res = canvas.map_with_index { |p, x, y, i| i.even? ? RGBA::BLACK : RGBA::WHITE }
         canvas[0, 0].should eq(RGBA::RED)
         canvas[1, 0].should eq(RGBA::RED)
         canvas[0, 1].should eq(RGBA::RED)
@@ -29,10 +29,29 @@ describe StumpyCore do
     describe "map_with_index!" do
       it "works as expected" do
         canvas = Canvas.new(10, 10, RGBA::RED)
-        canvas.map_with_index! {|p, x, y, i| i.even? ? RGBA::BLACK : RGBA::WHITE }
+        canvas.map_with_index! { |p, x, y, i| i.even? ? RGBA::BLACK : RGBA::WHITE }
         canvas[0, 0].should eq(RGBA::BLACK)
         canvas[1, 0].should eq(RGBA::WHITE)
         canvas[0, 1].should eq(RGBA::BLACK)
+      end
+    end
+
+    describe "resize" do
+      it "modifies the canvas" do
+        canvas = Canvas.new(10, 10, RGBA::RED)
+        canvas.resize(2, 2)
+        canvas.width.should eq(2)
+        canvas.height.should eq(2)
+        canvas.pixels.size.should eq(4)
+        canvas[0, 0].should eq(RGBA::RED)
+      end
+
+      it "throws an error if the size is to big" do
+        canvas = Canvas.new(10, 10, RGBA::RED)
+        size = 2**30
+        expect_raises(Exception) do
+          canvas.resize(size, size)
+        end
       end
     end
   end

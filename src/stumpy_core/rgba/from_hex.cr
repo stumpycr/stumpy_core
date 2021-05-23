@@ -25,15 +25,15 @@ module StumpyCore
         b = hex[4].to_i(16)
         from_rgba_n(r, g, b, a, 4)
       when 7
-        r = hex[1,2].to_i(16)
-        g = hex[3,2].to_i(16)
-        b = hex[5,2].to_i(16)
+        r = hex[1, 2].to_i(16)
+        g = hex[3, 2].to_i(16)
+        b = hex[5, 2].to_i(16)
         from_rgb_n(r, g, b, 8)
       when 9
-        a = hex[1,2].to_i(16)
-        r = hex[3,2].to_i(16)
-        g = hex[5,2].to_i(16)
-        b = hex[7,2].to_i(16)
+        a = hex[1, 2].to_i(16)
+        r = hex[3, 2].to_i(16)
+        g = hex[5, 2].to_i(16)
+        b = hex[7, 2].to_i(16)
         from_rgba_n(r, g, b, a, 8)
       else
         raise "Invalid hex color: #{hex}"

@@ -53,6 +53,5 @@ module StumpyCore
         RGBA.new(new_r.to_u16, new_g.to_u16, new_b.to_u16, new_a.to_u16)
       end
     end
-
   end
 end
