@@ -35,6 +35,34 @@ describe StumpyCore do
         canvas[0, 1].should eq(RGBA::BLACK)
       end
     end
+
+    describe "==" do
+      it "returns true for equivalent canvases" do
+        canvas1 = Canvas.new(10, 10, RGBA::RED)
+        canvas1.map_with_index! {|p, x, y, i| i.even? ? RGBA::BLACK : RGBA::WHITE }
+
+        canvas2 = Canvas.new(10, 10, RGBA::RED)
+        canvas2.map_with_index! {|p, x, y, i| i.even? ? RGBA::BLACK : RGBA::WHITE }
+
+        (canvas1 == canvas2).should be_true
+      end
+
+      it "returns false for different canvases" do
+        canvas1 = Canvas.new(10, 10, RGBA::RED)
+        canvas1.map_with_index! {|p, x, y, i| i.even? ? RGBA::BLACK : RGBA::WHITE }
+
+        canvas2 = Canvas.new(10, 10, RGBA::RED)
+        canvas2.map_with_index! {|p, x, y, i| i.odd? ? RGBA::BLACK : RGBA::WHITE }
+
+        (canvas1 == canvas2).should be_false
+      end
+
+      it "returns false for non-canvas arguments" do
+        canvas = Canvas.new(10, 10, RGBA::RED)
+        
+        (canvas == "definitely not a canvas").should be_false
+      end
+    end
   end
 
   describe RGBA do
