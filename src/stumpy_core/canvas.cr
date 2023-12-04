@@ -186,7 +186,7 @@ module StumpyCore
         @pixels == other.pixels
     end
 
-    # Past the contents of a second `Canvas`
+    # Paste the contents of a second `Canvas`
     # into this one,
     # starting at position `(x, y)`.
     # The pixels are combined using the `RGBA#over` function.
