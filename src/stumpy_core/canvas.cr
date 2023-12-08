@@ -179,11 +179,15 @@ module StumpyCore
     # Two canvases are considered equal
     # if they are of equal size
     # and all their pixels are equal
+    def ==(other : self)
+      @width == other.width &&
+      @height == other.height &&
+      @pixels == other.pixels
+    end
+    
+    # :nodoc:
     def ==(other)
-      self.class == other.class &&
-        @width == other.width &&
-        @height == other.height &&
-        @pixels == other.pixels
+      false
     end
 
     # Paste the contents of a second `Canvas`
